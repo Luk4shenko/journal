@@ -7,10 +7,9 @@
     <title>Панель администратора</title>
 </head>
 <body>
+    <div class="container">
     <h1>Панель администратора</h1>
-
-    <!-- Header buttons for change password and add admin -->
-    <div class="header-buttons">
+    <div style="display: flex; gap: 10px; margin-top: 40px;">
         <form action="/change-password" method="GET">
             <button type="submit">Сменить пароль</button>
         </form>
@@ -20,7 +19,12 @@
         <form action="/admin-panel" method="GET">
             <button type="submit">Редактирование справочника</button>
         </form>
-        <button onclick="window.location.href='/'">На главную</button>
+        <form action="/" method="GET">
+            <button type="submit">На главную</button>
+        </form>
+        <form id="excelExportForm" action="/export-to-excel" method="POST">
+            <button type="submit" id="exportToExcel">Экспорт в Excel</button>
+        </form>
     </div>
 
     <!-- Поиск по таблице -->
@@ -35,7 +39,7 @@
 
     <!-- Таблица с журналами -->
     <h2>Список выдач журналов</h2>
-    <table>
+    <table id="journalTable">
         <thead>
             <tr>
                 <th>Получил</th>
@@ -76,5 +80,26 @@
             <% }); %>
         </tbody>
     </table>
+</div>
 </body>
+<script>
+    document.getElementById('excelExportForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    
+    const table = document.getElementById('journalTable');
+    const html = table.outerHTML;
+
+    // Генерация Blob
+    const blob = new Blob([html], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
+    });
+
+    // Создание ссылки для скачивания
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'journal_data.xls';
+    a.click();
+});
+
+</script>
 </html>
