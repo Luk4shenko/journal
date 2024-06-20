@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Выдача журнала</title>
+</head>
+<body>
+    <h1>Выдача журнала</h1>
+    <form action="/issue" method="POST">
+        <label for="journalNumber">Номер журнала:</label>
+        <span id="journalNumber"></span><br><br>
+
+        <label for="fullName">ФИО:</label>
+        <input type="text" id="fullName" name="fullName" required><br><br>
+
+        <label for="issuedBy">Выдал:</label>
+        <input type="text" id="issuedBy" name="issuedBy" required><br><br>
+
+        <label for="journalType">Тип журнала:</label>
+        <input type="text" id="journalType" name="journalType" list="journalTypesList" required>
+        <datalist id="journalTypesList"></datalist><br><br>
+        
+        <label for="medicineType">Лекарственный препарат:</label>
+        <input type="text" id="medicineType" name="medicineType" list="medicineTypesList" required>
+        <datalist id="medicineTypesList"></datalist><br><br>       
+
+        <label for="additionalInfo">Серия/Оборудование/Помещение:</label><br>
+        <textarea id="additionalInfo" name="additionalInfo" rows="4" cols="50"></textarea><br><br>
+
+        <button type="submit">Выдать журнал</button>
+        <button onclick="window.location.href='/'">Отмена</button>
+    </form>
+    <script src="/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Добавить администратора</title>
+</head>
+<body>
+    <h1>Добавить администратора</h1>
+    <form action="/add-admin" method="post">
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" name="username">
+        <br>
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password">
+        <br>
+        <button type="submit">Добавить администратора</button>
+    </form>
+    <button onclick="window.location.href='/admin'">Отмена</button>
+</body>
+</html>

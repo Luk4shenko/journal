@@ -1,0 +1,158 @@
+/* styles.css */
+
+/* Основные стили для тела */
+body {
+    background-color: #e9f0f7;
+    font-family: 'Noto Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #495057;
+}
+
+/* Стили для контейнера */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для заголовков */
+h1, h2 {
+    color: #1e3a5f;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Стили для форм */
+form {
+    margin-bottom: 20px;
+}
+
+/* Стили для меток */
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+}
+
+/* Стили для полей ввода */
+input[type="text"],
+input[type="password"],
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Стили для текстовой области */
+textarea {
+    resize: vertical;
+}
+
+/* Стили для кнопок */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1e90ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button.btn-secondary {
+    background-color: #6c757d;
+}
+
+button.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Стили для таблиц */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    display: block;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #1e3a5f;
+    color: white;
+}
+
+td {
+    background-color: #f8f9fa;
+}
+
+/* Стили для контейнера формы */
+.form-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        margin: 20px 10px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+        width: calc(100% - 10px);
+    }
+
+    table {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 10px;
+        margin: 10px 5px;
+    }
+
+    h1, h2 {
+        font-size: 24px;
+    }
+
+    button {
+        font-size: 12px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}

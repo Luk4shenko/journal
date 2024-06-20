@@ -1,0 +1,75 @@
+<!-- admin-page.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Admin Page</title>
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <button onclick="window.location.href='/admin'">Назад</button>
+    <!-- Form to add new journal type -->
+    <div class="form-container">
+        <form action="/add-journal-type" method="POST">
+            <label for="journalTypeName">New Journal Type:</label>
+            <input type="text" id="journalTypeName" name="journalTypeName" required>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <!-- Table for displaying journal types -->
+    <h2>Journal Types</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        <% journalTypes.forEach(type => { %>
+            <tr>
+                <td><%= type.id %></td>
+                <td><%= type.name %></td>
+                <td>
+                    <form action="/delete-journal-type/<%= type.id %>" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+
+    <!-- Form to add new medicine type -->
+    <div class="form-container">
+        <form action="/add-medicine-type" method="POST">
+            <label for="medicineTypeName">New Medicine Type:</label>
+            <input type="text" id="medicineTypeName" name="medicineTypeName" required>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <!-- Table for displaying medicine types -->
+    <h2>Medicine Types</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        <% medicineTypes.forEach(type => { %>
+            <tr>
+                <td><%= type.id %></td>
+                <td><%= type.name %></td>
+                <td>
+                    <form action="/delete-medicine-type/<%= type.id %>" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Панель администратора</title>
+</head>
+<body>
+    <h1>Панель администратора</h1>
+
+    <!-- Header buttons for change password and add admin -->
+    <div class="header-buttons">
+        <form action="/change-password" method="GET">
+            <button type="submit">Сменить пароль</button>
+        </form>
+        <form action="/add-admin" method="GET">
+            <button type="submit">Добавить администратора</button>
+        </form>
+        <form action="/admin-panel" method="GET">
+            <button type="submit">Редактирование справочника</button>
+        </form>
+        <button onclick="window.location.href='/'">На главную</button>
+    </div>
+
+    <!-- Поиск по таблице -->
+    <form action="/search" method="GET">
+        <label for="search">Поиск:</label>
+        <input type="text" id="search" name="search">
+        <button type="submit">Найти</button>
+        <form action="/reset" method="GET">
+            <button type="submit">Сбросить</button>
+        </form>
+    </form>
+
+    <!-- Таблица с журналами -->
+    <h2>Список выдач журналов</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Получил</th>
+                <th>Выдал</th>
+                <th>Дата выдачи</th>
+                <th>Тип</th>
+                <th>Продукт</th>
+                <th>Номер журнала</th>
+                <th>Серия/Оборудование/Помещение</th>
+                <th>Дата возврата</th>
+                <th>Возврат подтвердил</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Здесь будут данные из базы данных -->
+            <% issues.sort((a, b) => a.returnConfirmed - b.returnConfirmed).forEach(issue => { %>
+                <tr>
+                    <td><%= issue.fullName %></td>
+                    <td><%= issue.issuedBy %></td>
+                    <td><%= issue.issueDate %></td>
+                    <td><%= issue.journalType %></td>
+                    <td><%= issue.medicineType %></td>
+                    <td><%= issue.journalNumber %></td>
+                    <td><%= issue.additionalInfo %></td>
+                    <td><%= issue.returnDate || '-' %></td>
+                    <td><%= issue.returnConfirmedBy || '-' %></td>
+                    <td>
+                        <% if (!issue.returnConfirmed) { %>
+                            <form action="/confirmReturn/<%= issue.id %>" method="POST">
+                                <button type="submit">Подтвердить возврат</button>
+                            </form>
+                        <% } else { %>
+                            Возвращено
+                        <% } %>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
