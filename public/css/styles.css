@@ -55,10 +55,10 @@ input[type="text"],
 input[type="password"],
 textarea {
     width: calc(60% - 20px);
-    padding: 10px;
-    margin-bottom: 20px;
+    padding: 0.8vw;
+    margin-bottom: 0.4vw;
     border: 1px solid #ced4da;
-    border-radius: 5px;
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 1.2vw;
 }
