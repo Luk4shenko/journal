@@ -13,19 +13,19 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
-const redisClient = redis.createClient();
 
-// Настройка сессий с RedisStore
+const redisClient = createClient({
+    legacyMode: true,
+    url: 'redis://localhost:6379'
+});
+
+redisClient.connect().catch(console.error);
+
 app.use(session({
     store: new RedisStore({ client: redisClient }),
-    secret: 'your_secret_key',
+    secret: 'yourSecretKey',
     resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false, // true, если используете https
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 // сессия длится 1 день
-    }
+    saveUninitialized: false
 }));
 
 
