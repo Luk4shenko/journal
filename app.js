@@ -12,9 +12,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
 app.use(session({
-    secret: 'yourSecretKey',
+    secret: 'mysecretkey',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        secure: false, // установите в true если используете https
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 часа
+    }
 }));
 
 
