@@ -10,8 +10,8 @@ body {
 
 /* Стили для контейнера */
 .container {
-    max-width: 1200px;
-    margin: 40px auto;
+    max-width: 95%;
+    margin: 30px auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -20,10 +20,19 @@ body {
 }
 
 /* Стили для заголовков */
-h1, h2 {
+h1 {
     color: #1e3a5f;
     text-align: center;
-    margin-bottom: 3vw;
+    margin-bottom: 2vw;
+    margin-top: 1vw;
+}
+
+/* Стили для заголовков */
+h2 {
+    color: #1e3a5f;
+    text-align: center;
+    margin-bottom: 1.5vw;
+    margin-top: 3vw;
 }
 
 /* Стили для форм */
@@ -37,8 +46,8 @@ label {
     margin-bottom: 8px;
     margin-top: 1,5vw;
     color: #495057;
-    font-size: 1vw;
     font-weight: bold;
+    font-size: 1.2vw;
 }
 
 /* Стили для полей ввода */
@@ -51,6 +60,7 @@ textarea {
     border: 1px solid #ced4da;
     border-radius: 5px;
     box-sizing: border-box;
+    font-size: 1.2vw;
 }
 
 /* Стили для текстовой области */
@@ -60,23 +70,23 @@ textarea {
 
 /* Стили для кнопок */
 button {
-    padding: 10px 20px;
+    padding: 0.9vw 1.4vw;
     border: none;
-    border-radius: 5px;
-    background-color: #1e90ff;
+    border-radius: 8px;
+    background-color: #005DB9;
     color: white;
-    font-size: 1.1vw; /* Адаптивный размер шрифта */
+    font-size: 1.1vw;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-right: 10px;
+    margin-right: 0.3vw;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #007bff;
 }
 
 button.btn-secondary {
-    background-color: #6c757d;
+    background-color: #727980;
 }
 
 button.btn-secondary:hover {
@@ -88,15 +98,15 @@ button.btn-secondary:hover {
     width: 100%;
     overflow-x: auto;
     margin-bottom: 20px;
-    padding-left: 20px;  /* Добавление отступа слева */
-    padding-right: 20px; /* Добавление отступа справа */
+    padding-left: 20px; 
+    padding-right: 20px;
 }
 
 /* Стили для таблиц */
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 1vw; /* Адаптивный размер шрифта */
+    font-size: 1vw; 
 }
 
 th, td {
@@ -107,7 +117,7 @@ th, td {
 }
 
 th {
-    background-color: #1e3a5f;
+    background-color: #005DB9;
     color: white;
 }
 
@@ -117,8 +127,8 @@ td {
 
 /* Стили для кнопок внутри таблицы */
 td button {
-    font-size: 1vw; /* Адаптивный размер шрифта для кнопок внутри таблицы */
-    padding: 5px 10px; /* Уменьшенные отступы для кнопок */
+    font-size: 1vw;
+    padding: 5px 10px;
 }
 
 /* Стили для контейнера формы */
@@ -128,6 +138,22 @@ td button {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+}
+
+/* Стили для кнопок внутри таблицы */
+td button {
+    font-size: 1vw;
+    padding: 10px 15px;
+    background-color: #D60058;  /* Новый цвет для кнопок */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+td button:hover {
+    background-color: #b30047;  /* Темнее оттенок для hover состояния */
 }
 
 /* Адаптивные стили */
@@ -155,7 +181,7 @@ td button {
 
     td button {
         font-size: 2vw; /* Адаптивный размер шрифта для кнопок внутри таблицы */
-        padding: 5px; /* Уменьшенные отступы для кнопок */
+        padding: 5px; 
     }
 }
 
@@ -178,7 +204,7 @@ td button {
     }
 
     td button {
-        font-size: 3vw; /* Адаптивный размер шрифта для кнопок внутри таблицы */
-        padding: 5px; /* Уменьшенные отступы для кнопок */
+        font-size: 3vw;
+        padding: 5px;
     }
 }

@@ -6,23 +6,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css">
-    <title>Редактор справоников</title>
+    <title>Редактор справочников</title>
 </head>
 <body>
     <div class="container">
-    <h1>Редактор справоников</h1>
+    <h1>Редактор справочников</h1>
     <button onclick="window.location.href='/admin'">Назад</button>
-    <!-- Form to add new journal type -->
-    <div class="form-container">
+
+    <h2>Типы Журналов</h2>
         <form action="/add-journal-type" method="POST">
             <label for="journalTypeName">Новый тип журнала:</label>
             <input type="text" id="journalTypeName" name="journalTypeName" required>
             <button type="submit">Добавить</button>
         </form>
-    </div>
-
-    <!-- Table for displaying journal types -->
-    <h2>Типы Журналов</h2>
     <table>
         <tr>
             <th>Наименование</th>
@@ -40,17 +36,12 @@
         <% }); %>
     </table>
 
-    <!-- Form to add new medicine type -->
-    <div class="form-container">
+    <h2>Справочник препаратов</h2>
         <form action="/add-medicine-type" method="POST">
             <label for="medicineTypeName">Новый препарат:</label>
             <input type="text" id="medicineTypeName" name="medicineTypeName" required>
             <button type="submit">Добавить</button>
         </form>
-    </div>
-
-    <!-- Table for displaying medicine types -->
-    <h2>Справочник препаратов</h2>
     <table>
         <tr>
             <th>Наименование</th>

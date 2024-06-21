@@ -9,25 +9,28 @@
 <body>
     <div class="container">
     <h1>Панель администратора</h1>
-    <div style="display: flex; gap: 10px; margin-top: 40px;">
+    <div>
+        <form action="/" method="GET">
+            <button type="submit">На главную</button>
+        </form>
+    </div>
+    <div style="display: flex; gap: 0.6vw;">
+        <form action="/admin-panel" method="GET">
+            <button type="submit">Редактирование справочника</button>
+        </form>
+        <form id="excelExportForm" action="/export-to-excel" method="POST">
+            <button type="submit" id="exportToExcel">Экспорт в Excel</button>
+        </form>
         <form action="/change-password" method="GET">
             <button type="submit">Сменить пароль</button>
         </form>
         <form action="/add-admin" method="GET">
             <button type="submit">Добавить администратора</button>
         </form>
-        <form action="/admin-panel" method="GET">
-            <button type="submit">Редактирование справочника</button>
-        </form>
-        <form action="/" method="GET">
-            <button type="submit">На главную</button>
-        </form>
-        <form id="excelExportForm" action="/export-to-excel" method="POST">
-            <button type="submit" id="exportToExcel">Экспорт в Excel</button>
-        </form>
     </div>
 
-    <!-- Поиск по таблице -->
+    <!-- Таблица с журналами -->
+    <h2>История выдачи журналов</h2>
     <form action="/search" method="GET">
         <label for="search">Поиск:</label>
         <input type="text" id="search" name="search">
@@ -36,9 +39,6 @@
             <button type="submit">Сбросить</button>
         </form>
     </form>
-
-    <!-- Таблица с журналами -->
-    <h2>Список выдач журналов</h2>
     <table id="journalTable">
         <thead>
             <tr>
