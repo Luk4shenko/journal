@@ -14,10 +14,10 @@
             <span id="journalNumber" style="font-weight: bold; font-size: 1.5vw;"></span><br><br>
 
             <label for="fullName">ФИО:</label>
-            <input type="text" id="fullName" name="fullName" required><br><br>
+            <input type="text" id="fullName" name="fullName" required oninput="searchEmployee('fullName', this.value)"><br><br>
 
             <label for="issuedBy">Выдал:</label>
-            <input type="text" id="issuedBy" name="issuedBy" required><br><br>
+            <input type="text" id="issuedBy" name="issuedBy" required oninput="searchEmployee('issuedBy', this.value)"><br><br>
 
             <label for="journalType">Тип журнала:</label>
             <input type="text" id="journalType" name="journalType" list="journalTypesList" required>
