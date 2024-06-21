@@ -22,7 +22,6 @@ app.use(session({
     }
 }));
 
-
 // Подключение к базе данных SQLite
 const db = new sqlite3.Database('./db/journal.db', (err) => {
     if (err) {
