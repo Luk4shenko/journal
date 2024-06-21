@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const session = require('express-session');
-const path = require('path'); 
+const path = require('path');
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis');
 
 const app = express();
 const port = 3000;
@@ -10,6 +12,22 @@ const port = 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
+
+const redisClient = redis.createClient();
+
+// Настройка сессий с RedisStore
+app.use(session({
+    store: new RedisStore({ client: redisClient }),
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false, // true, если используете https
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 // сессия длится 1 день
+    }
+}));
+
 
 // Подключение к базе данных SQLite
 const db = new sqlite3.Database('./db/journal.db', (err) => {
