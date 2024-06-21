@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const session = require('express-session');
 const path = require('path');
-const RedisStore = require('connect-redis')(session);
+const RedisStore = require('connect-redis').default;
 const redis = require('redis');
 
 const app = express();
