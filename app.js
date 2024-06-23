@@ -3,24 +3,29 @@ const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const session = require('express-session');
 const path = require('path');
+const bcrypt = require('bcrypt'); 
 
 const app = express();
 const port = 4000;
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
 app.use(session({
-    secret: 'mysecretkey',
+    secret: 'the_most_secret_key',
     resave: false,
     saveUninitialized: false,
     cookie: {
         secure: false, // установите в true если используете https
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 24 часа
+        maxAge: 60 * 60 * 1000 // 1 час
     }
 }));
+
+const saltRounds = 10;
 
 // Подключение к базе данных SQLite
 const db = new sqlite3.Database('./db/journal.db', (err) => {
@@ -54,19 +59,26 @@ function createTables() {
         password TEXT,
         role TEXT
     )`, () => {
-        // Проверка, существует ли запись с id = 0
+        const adminPassword = '12345678';
         db.get('SELECT * FROM users WHERE id = 0', (err, row) => {
             if (err) {
                 console.error('Database query error:', err.message);
             } else if (!row) {
-                // Вставка записи, если ее нет
-                db.run(`INSERT INTO users (id, username, password, role) VALUES (0, 'admin', '12345678', 'admin')`, (err) => {
+                bcrypt.hash(adminPassword, saltRounds, (err, hash) => {
                     if (err) {
-                        console.error('Error inserting admin user:', err.message);
+                        console.error('Error hashing admin password:', err.message);
                     } else {
-                        console.log('Admin user created successfully');
+                        db.run(`INSERT INTO users (id, username, password, role) VALUES (0, 'admin', ?, 'god')`, [hash], (err) => {
+                            if (err) {
+                                console.error('Error inserting admin user:', err.message);
+                            } else {
+                                console.log('Admin user created successfully');
+                            }
+                        });
                     }
                 });
+            } else {
+                console.log('Admin user already exists');
             }
         });
     });
@@ -81,17 +93,14 @@ function createTables() {
         name TEXT UNIQUE
     )`);
 
-    // Создание таблицы для хранения текущего значения nextNumber
     db.run(`CREATE TABLE IF NOT EXISTS journalNumbers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         currentNumber INTEGER
     )`, () => {
-        // Проверка, существует ли запись с id = 1
         db.get('SELECT * FROM journalNumbers WHERE id = 1', (err, row) => {
             if (err) {
                 console.error('Database query error:', err.message);
             } else if (!row) {
-                // Вставка записи с начальным значением 0, если ее нет
                 db.run(`INSERT INTO journalNumbers (id, currentNumber) VALUES (1, 0)`, (err) => {
                     if (err) {
                         console.error('Error inserting initial journal number:', err.message);
@@ -111,12 +120,59 @@ app.use(session({
 }));
 
 function checkAuth(req, res, next) {
-    if (req.session.user && req.session.user.role === 'admin') {
+    if (req.session.user && (req.session.user.role === 'admin' || req.session.user.role === 'god')) {
         next();
     } else {
         res.redirect('/login');
     }
 }
+
+// Function to check if the user has 'god' role
+function checkGodRole(req, res, next) {
+    if (req.session.user && req.session.user.role === 'god') {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
+
+// Route to render the password reset form
+app.get('/reset-password', checkGodRole, (req, res) => {
+    res.render('reset-password');
+});
+
+// Route to handle password reset form submission
+app.post('/reset-password', checkGodRole, (req, res) => {
+    const { username, newPassword } = req.body;
+
+    // Check if the user exists
+    db.get('SELECT * FROM users WHERE username = ?', [username], (err, user) => {
+        if (err) {
+            console.error('Database query error:', err.message);
+            res.status(500).send('Database query error');
+        } else if (!user) {
+            res.status(404).send('User not found');
+        } else {
+            // Hash the new password
+            bcrypt.hash(newPassword, saltRounds, (err, hash) => {
+                if (err) {
+                    console.error('Error hashing new password:', err.message);
+                    res.status(500).send('Error hashing new password');
+                } else {
+                    // Update the user's password in the database
+                    db.run('UPDATE users SET password = ? WHERE username = ?', [hash, username], (err) => {
+                        if (err) {
+                            console.error('Database update error:', err.message);
+                            res.status(500).send('Database update error');
+                        } else {
+                            res.send('Password reset successfully');
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
 
 // Функция для генерации следующего номера журнала
 function generateNextJournalNumber(callback) {
@@ -144,8 +200,6 @@ function generateNextJournalNumber(callback) {
     });
 }
 
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Маршрут для главной страницы
 app.get('/', (req, res) => {
     res.render('index');
@@ -171,14 +225,13 @@ app.get('/issue', (req, res) => {
     });
 });
 
-// Маршрут для страницы администратора
 app.get('/admin', checkAuth, (req, res) => {
     db.all('SELECT * FROM issues', (err, rows) => {
         if (err) {
             console.error('Database query error:', err.message);
             res.status(500).send('Database query error');
         } else {
-            res.render('admin', { issues: rows });
+            res.render('admin', { issues: rows, username: req.session.user.username });
         }
     });
 });
@@ -194,11 +247,20 @@ app.post('/login', (req, res) => {
         if (err) {
             console.error('Database query error:', err.message);
             res.status(500).send('Database query error');
-        } else if (!user || user.password !== password) {
+        } else if (!user) {
             res.status(401).send('Invalid username or password');
         } else {
-            req.session.user = user;
-            res.redirect('/admin');
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (err) {
+                    console.error('Error comparing passwords:', err.message);
+                    res.status(500).send('Error comparing passwords');
+                } else if (result) {
+                    req.session.user = user;
+                    res.redirect('/admin');
+                } else {
+                    res.status(401).send('Invalid username or password');
+                }
+            });
         }
     });
 });
@@ -215,15 +277,29 @@ app.post('/change-password', checkAuth, (req, res) => {
         if (err) {
             console.error('Database query error:', err.message);
             res.status(500).send('Database query error');
-        } else if (user.password !== oldPassword) {
-            res.status(401).send('Incorrect old password');
         } else {
-            db.run('UPDATE users SET password = ? WHERE id = ?', [newPassword, userId], (err) => {
+            bcrypt.compare(oldPassword, user.password, (err, result) => {
                 if (err) {
-                    console.error('Database update error:', err.message);
-                    res.status(500).send('Database update error');
+                    console.error('Error comparing passwords:', err.message);
+                    res.status(500).send('Error comparing passwords');
+                } else if (result) {
+bcrypt.hash(newPassword, saltRounds, (err, hash) => {
+    if (err) {
+        console.error('Error hashing new password:', err.message);
+        res.status(500).send('Error hashing new password');
+    } else {
+        db.run('UPDATE users SET password = ? WHERE id = ?', [hash, userId], (err) => {
+            if (err) {
+                console.error('Database update error:', err.message);
+                res.status(500).send('Database update error');
+            } else {
+                res.send('Password changed successfully');
+            }
+        });
+    }
+});
                 } else {
-                    res.send('Password changed successfully');
+                    res.status(401).send('Incorrect old password');
                 }
             });
         }
@@ -237,12 +313,19 @@ app.get('/add-admin', checkAuth, (req, res) => {
 app.post('/add-admin', checkAuth, (req, res) => {
     const { username, password } = req.body;
 
-    db.run('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', [username, password, 'admin'], (err) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
-            console.error('Database insert error:', err.message);
-            res.status(500).send('Database insert error');
+            console.error('Error hashing password:', err.message);
+            res.status(500).send('Error hashing password');
         } else {
-            res.send('New admin added successfully');
+            db.run('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', [username, hash, 'admin'], (err) => {
+                if (err) {
+                    console.error('Database insert error:', err.message);
+                    res.status(500).send('Database insert error');
+                } else {
+                    res.send('New admin added successfully');
+                }
+            });
         }
     });
 });
