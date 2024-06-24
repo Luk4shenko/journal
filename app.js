@@ -57,7 +57,8 @@ function createTables() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
         password TEXT,
-        role TEXT
+        role TEXT,
+        fullName TEXT
     )`, () => {
         const adminPassword = '12345678';
         db.get('SELECT * FROM users WHERE id = 0', (err, row) => {
@@ -68,7 +69,7 @@ function createTables() {
                     if (err) {
                         console.error('Error hashing admin password:', err.message);
                     } else {
-                        db.run(`INSERT INTO users (id, username, password, role) VALUES (0, 'admin', ?, 'god')`, [hash], (err) => {
+                        db.run(`INSERT INTO users (id, username, password, role, fullname) VALUES (0, 'admin', ?, 'god', 'admin')`, [hash], (err) => {
                             if (err) {
                                 console.error('Error inserting admin user:', err.message);
                             } else {
@@ -112,12 +113,6 @@ function createTables() {
         });
     });
 }
-
-app.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    saveUninitialized: true,
-}));
 
 function checkAuth(req, res, next) {
     if (req.session.user && (req.session.user.role === 'admin' || req.session.user.role === 'god')) {
@@ -311,22 +306,22 @@ app.get('/add-admin', checkAuth, (req, res) => {
 });
 
 app.post('/add-admin', checkAuth, (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, fullName } = req.body;
 
     bcrypt.hash(password, saltRounds, (err, hash) => {
         if (err) {
             console.error('Error hashing password:', err.message);
-            res.status(500).send('Error hashing password');
-        } else {
-            db.run('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', [username, hash, 'admin'], (err) => {
-                if (err) {
-                    console.error('Database insert error:', err.message);
-                    res.status(500).send('Database insert error');
-                } else {
-                    res.send('New admin added successfully');
-                }
-            });
+            return res.status(500).send('Error hashing password');
         }
+        
+        db.run('INSERT INTO users (username, password, role, fullName) VALUES (?, ?, ?, ?)', [username, hash, 'admin', fullName], (err) => {
+            if (err) {
+                console.error('Database insert error:', err.message);
+                return res.status(500).send('Database insert error');
+            }
+
+            res.send('New admin added successfully');
+        });            
     });
 });
 
@@ -387,7 +382,7 @@ app.get('/predictNextJournalNumber', (req, res) => {
 
 app.post('/confirmReturn/:id', checkAuth, (req, res) => {
     const issueId = req.params.id;
-    const returnConfirmedBy = req.session.user.username; // Используем логин текущего пользователя
+    const returnConfirmedBy = req.session.user.fullName; // Используем полное имя текущего пользователя
 
     db.run(`UPDATE issues SET returnDate = datetime('now','localtime'),
                               returnConfirmed = 1,

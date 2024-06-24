@@ -5,19 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css">
     <title>Добавить администратора</title>
-    <script>
-        function validateUsername() {
-            const usernameInput = document.getElementById('username');
-            const usernameValue = usernameInput.value.trim();
-
-            // Check if username starts with 'sc'
-            if (!usernameValue.startsWith('sc')) {
-                alert('Имя пользователя должно начинаться с "sc".');
-                return false;
-            }
-            return true;
-        }
-    </script>
 </head>
 <body>
     <div class="container">
@@ -26,6 +13,10 @@
             <label for="username">Имя пользователя:</label>
             <input type="text" id="username" name="username" value="sc" required>
             <br>
+            <label for="fullName">ФИО (автоматически):</label>
+            <input type="text" id="fullNameInput" readonly style="background-color: #f0f0f0; color: #333;">
+            <input type="hidden" id="hiddenFullName" name="fullName" value="">
+            <br>
             <label for="password">Пароль:</label>
             <input type="password" id="password" name="password" required>
             <br>
@@ -33,5 +24,6 @@
         </form>
         <button onclick="window.location.href='/admin'">Отмена</button>
     </div>
+    <script src="/scripts.js"></script>
 </body>
 </html>
