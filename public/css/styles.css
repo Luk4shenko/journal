@@ -8,6 +8,11 @@ body {
     overflow-x: hidden;
 }
 
+.logo {
+    max-width: 18%;
+    height: auto;
+}
+
 /* Стили для контейнера */
 .container {
     max-width: 95%;

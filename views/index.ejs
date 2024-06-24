@@ -7,10 +7,17 @@
     <title>Главная страница</title>
 </head>
 <body>
-    <div class="container" style="text-align: center; max-width: 50%;">
+    <div class="container" style="text-align: center; max-width: 50vw;">
+        <img src="/images/logo.svg" alt="Логотип" class="logo">
         <h1>Выдача и возврат журналов</h1>
-        <a href="/issue"><button>Выдача журнала</button></a>
-        <a href="/admin"><button>Панель администратора</button></a>
+        <div style="display: flex; gap: 1vw; width: 100%;">
+            <a href="/issue" style="flex: 1;">
+                <button style="width: 100%; padding: 1vw;">Выдача журнала</button>
+            </a>
+            <a href="/admin" style="flex: 1;">
+                <button style="width: 100%; padding: 1vw;">Панель администратора</button>
+            </a>
+        </div>
     </div>
 </body>
 </html>

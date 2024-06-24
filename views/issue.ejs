@@ -14,21 +14,21 @@
             <span id="journalNumber" style="font-weight: bold; font-size: 1.5vw;"></span><br><br>
 
             <label for="fullName">ФИО:</label>
-            <input type="text" id="fullName" name="fullName" required oninput="searchEmployee('fullName', this.value)"><br><br>
+            <input type="text" id="fullName" name="fullName" required oninput="searchEmployee('fullName', this.value)" autocomplete="off"><br><br>
 
             <label for="issuedBy">Выдал:</label>
-            <input type="text" id="issuedBy" name="issuedBy" required oninput="searchEmployee('issuedBy', this.value)"><br><br>
+            <input type="text" id="issuedBy" name="issuedBy" required oninput="searchEmployee('issuedBy', this.value)" autocomplete="off"><br><br>
 
             <label for="journalType">Тип журнала:</label>
-            <input type="text" id="journalType" name="journalType" list="journalTypesList" required>
+            <input type="text" id="journalType" name="journalType" list="journalTypesList" autocomplete="off" required>
             <datalist id="journalTypesList"></datalist><br><br>
             
             <label for="medicineType">Лекарственный препарат:</label>
-            <input type="text" id="medicineType" name="medicineType" list="medicineTypesList" required>
+            <input type="text" id="medicineType" name="medicineType" list="medicineTypesList" autocomplete="off" required>
             <datalist id="medicineTypesList"></datalist><br><br>       
 
             <label for="additionalInfo">Серия/Оборудование/Помещение:</label><br>
-            <textarea id="additionalInfo" name="additionalInfo" rows="4" cols="50"></textarea><br><br>
+            <textarea id="additionalInfo" name="additionalInfo" rows="4" cols="50" autocomplete="off"></textarea><br><br>
             
             <button type="submit">Выдать журнал</button>
             <button type="button" onclick="window.location.href='/'">Отмена</button>
