@@ -51,7 +51,6 @@ function createTables() {
         returnDate TEXT,
         returnConfirmed INTEGER DEFAULT 0,
         returnConfirmedBy TEXT,
-        issueType TEXT
     )`);
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
