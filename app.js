@@ -411,7 +411,7 @@ app.get('/search', checkAuth, (req, res) => {
             console.error('Database query error:', err.message);
             res.status(500).send('Database query error');
         } else {
-            res.render('admin', { issues: rows });
+            res.render('admin', { issues: rows, username: req.session.user.username });
         }
     });
 });
